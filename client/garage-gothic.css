@@ -1,0 +1,15 @@
+@import url("https://p.typekit.net/p.css?s=1&k=fik0xcy&ht=tk&f=31060.31061&a=10235719&app=typekit&e=css");
+
+@font-face {
+font-family:"garage-gothic";
+src:url("https://use.typekit.net/af/85d488/00000000000000003b9ae7a3/27/l?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n4&v=3") format("woff2"),url("https://use.typekit.net/af/85d488/00000000000000003b9ae7a3/27/d?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n4&v=3") format("woff"),url("https://use.typekit.net/af/85d488/00000000000000003b9ae7a3/27/a?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n4&v=3") format("opentype");
+font-style:normal;font-weight:400;
+}
+
+@font-face {
+font-family:"garage-gothic";
+src:url("https://use.typekit.net/af/8503f0/00000000000000003b9ae7a4/27/l?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n7&v=3") format("woff2"),url("https://use.typekit.net/af/8503f0/00000000000000003b9ae7a4/27/d?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n7&v=3") format("woff"),url("https://use.typekit.net/af/8503f0/00000000000000003b9ae7a4/27/a?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n7&v=3") format("opentype");
+font-style:normal;font-weight:700;
+}
+
+.tk-garage-gothic { font-family: "garage-gothic",sans-serif; }

@@ -1,0 +1,67 @@
+
+<template name="error">
+    Nothing to see here.
+</template>
+
+<template name="expert_view">
+
+    {{> grid}}{{> level}}
+
+    <div>
+        <button id="levelDone" class="">{{#if empty}}Next{{else}}Finished{{/if}}</button>
+    </div>
+    
+</template>
+<template name="client_view">
+    <div class="client">
+        {{> grid}}
+        {{#each pieces}}
+            {{> piece id=@index piece=this}}
+        {{/each}}
+    </div>
+</template>
+<template name="edit_view">
+    <button id="save">Save level</button>
+    <p></p>
+    {{> grid}}
+    <p></p>
+    {{> grid}}
+    {{#each pieces}}
+        {{> piece id=@index piece=this}}
+    {{/each}}
+
+</template>
+
+<template name="grid">
+    <div class="grid">
+        {{#each grid}}
+        {{> row squares=this row=@index}}
+        {{/each}}
+    </div>
+</template>
+
+<template name="level">
+    <div class="grid">
+        {{#each grid}}
+        {{> row squares=this row=@index}}
+        {{/each}}
+    </div>
+</template>
+    
+
+
+<template name="row">
+    {{#each squares}}{{#if @index}}{{> square active=this row=../row column=@index}}{{/if}}{{/each}}<br>
+</template>
+
+<template name="square">
+<div class="square {{#if active}}black{{/if}}">&nbsp;</div>
+</template>
+
+<template name="piece">
+    <div class="piece" id="{{id}}" style="top: {{top}}px; left: {{left}}px;">
+        {{#each piece}}
+        {{> row squares=this row=@index}}
+        {{/each}}
+    </div>
+</template>

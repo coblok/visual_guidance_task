@@ -1,0 +1,67 @@
+levels:
+
+1: 
+    "hBPrMiRDzzusuAKfc", 
+    "ybeigaoNyJ5byYGNx" 
+
+2:
+	"4FdwcBRqwcYPLnRaL",
+	"cz7CF9tNG63ZdHaEc",
+	"L3tK8RrfJ9NJHjfyB",
+	"46TXraHAKHGEjihdW",
+	"vHSKuEgWWRoHyaprK",
+	"4NfELzMsBDm8XkAmD",
+	"9twek5gTPFspyiQ5z",
+	"c5fnYZuAGs3nhjXCn",
+	"MxMHwWu3ToX4S32A8",
+	"eLdyEqy3R724pfBFw"
+
+3:
+	"hTBDzb5GzRd7YmjAt",
+	"9GyqYyrx2nwQvWAjo",
+	"mHojzWurJkMNh6H2m",
+	"CZhjN3Mg83sDXZxab",
+	"CnALiDbrTHRBQftzM",
+	"DSfvRhCCDJNmg7cp7",
+	"GAzn8YyR77psq2MwF",
+	"i5ecKzNo4Z9Q65qGq",
+	"asuNJoBt4hajWdaq7",
+	"DZtbYfSxEyPEfT7EA",
+	"YfskiJZXgagsT7o7q",
+	"AaGAqWfbKrJqpA83F",
+	"CBYuRupCcfaGoEtGg"
+
+4:
+	"DrHzHSPt5t8uR8gLN",
+	"NX7TBK9nPDaFPqPF9",
+	"yG4pGcDBfXAfybqrc",
+	"5DjaNXgQMCQJyg4bx",
+	"mWc5mviyswQue4NJy",
+	"yQYb3Kvi2j24hMp5E",
+	"Gm3YikE7LCG5ghAsi",
+	"KjKKHspcK2nAgMm4F",
+	"PsfzCem3oaG7Da2cv",
+	"DToD2FNkEPPksdeW7",
+	"FWtnEdFrq9wSwnkRH",
+	"PJnx4AxMmhrfoHe9o",
+	"Qui579GheKhKEJ4zB",
+	"yurgZ39wLhpiXXE6W",
+	"Ceu4czg4vdukd8LhN",
+	"5QTerM7i4MhdBCpB4",
+	"aea2sviG23QDKW6JT",
+	"B7ZZ47D7EZfT897Fy"
+
+5:
+	"vC3xB7akPmo4aa6oT",
+	"7Km6kK6o2Pcd2mZwf",
+	"GY3JZyrXjChDuRgPG",
+	"BANQCFutBGWwS9HW8",
+	"drX4f5fenhwAgLtbc",
+	"pDirDNcGmGWNTyvEW",
+	"bK9d2tYpuJaZmqTTR",
+	"Es5MYocKRMqLj5H3W",
+	"Qi8wBF5axRdzmbMX9",
+	"uGPhSpToLYG8PiNiX"
+
+6:
+    "GifPfjmRiHxjeJ52S"

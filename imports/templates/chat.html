@@ -1,0 +1,24 @@
+<template name="chat">
+    <div class="chat">
+        <h2>CHAT {{#if showHeart}}<span id="heart_icon"></span>{{/if}}</h2>
+        <div class="messages">
+            {{#each messages}}
+                {{> message}}
+            {{/each}}
+        </div>
+        <hr>
+        <textarea maxlength="1000" placeholder="Write here"></textarea>
+        <div class="footer">
+            <button>Send</button>
+        </div>        
+    </div>
+</template>
+
+<template name="message">
+    <div class="message">
+        {{#unless hide_header}}
+            <h4>{{time}} | {{nick}}</h4>
+        {{/unless}}
+        {{text}}
+    </div>
+</template>
