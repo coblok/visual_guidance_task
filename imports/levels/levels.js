@@ -1,3 +1,5 @@
+//this file defines the order of the levels presented in the game
+
 export var levels = [
     //1 piece
     "hBPrMiRDzzusuAKfc",

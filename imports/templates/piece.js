@@ -1,12 +1,15 @@
+//this file contains most of the game logic
+
 import { Grids, Solutions } from '../../database/collections.js';
 import { Template } from 'meteor/templating';
 import { ReactiveVar } from 'meteor/reactive-var';
 import './templates.html';
 
 
-
+//initialized current selected block index
 Session.set('block_index', 0);
 
+//update state of current pieces for client and edit views
 Template.client_view.helpers({
   pieces() {
     return Session.get('pieces');
@@ -18,15 +21,20 @@ Template.edit_view.helpers({
   }
 });
 
+//let expert view know if we are in the "empty" level which comes inbetween levels
 Template.expert_view.helpers({
   empty() {
     return Session.get('levelId') === 'empty';
   }
 });
+
+//handle level progression in the expert view
 Template.expert_view.events({
   'click #levelDone': function() {
     var level_index = Session.get('level_index');
     var level = Session.get('levelId');
+
+    //if current level is "empty", begin the next level
     if(level === 'empty') {
       Session.set('beginTaskTimestamp', (new Date()).getTime());
       if(level_index !== undefined) {
@@ -34,6 +42,8 @@ Template.expert_view.events({
       }
       else Session.set('level_index', 0);
     }
+
+    //if there was a level going on, store the solution and move onto the the "empty" level
     else {
       var gridId = Session.get('gridId')
       var grid = Grids.findOne();
@@ -50,28 +60,29 @@ Template.expert_view.events({
   }
 });
 
-//piece code
+//this code handles the individual pieces
 Template.piece.onCreated(function() {
-  //needs to set the piece as reactivevar here_::
 
+  //set piece index
   var blocks = Session.get('pieces');
   var block_index = Session.get('block_index');
 
   this.piece = new ReactiveVar(blocks[block_index % blocks.length]);
   this.index = block_index;
 
+  //update index for the next piece
   block_index++;
   Session.set('block_index', block_index);
 
+  //set the location of the piece on screen
   this.offset = new ReactiveVar([0, 0]);
 
+  //set the position on grid for the piece
   this.grid_coordinates = new ReactiveVar([-1, -1]);
 });
 
-Template.piece.helpers({/*
-  piece() {
-    return Template.instance().piece.get();
-  },*/
+//set the initial locations of the pieces
+Template.piece.helpers({
   top() {
     return 20 + Math.floor(Template.instance().index % 4) * 140;
   },
@@ -81,6 +92,7 @@ Template.piece.helpers({/*
   }
 });
 
+//handle mouse down event on the piece
 function pieceMouseDown(event, instance) {
   var dragged_piece = $(event.currentTarget)[0].id;
   Session.set("dragged_piece", dragged_piece);
@@ -96,6 +108,7 @@ function pieceMouseDown(event, instance) {
   $(event.currentTarget).css('z-index', z_index);
 }
 
+//handle mouse up event on the piece
 function pieceMouseUp(event, instance) {
   var dragged_piece = undefined;
   Session.set("dragged_piece", dragged_piece);
@@ -109,7 +122,7 @@ function pieceMouseUp(event, instance) {
   var piece = instance.data.piece; //instance.piece.get();
   var square_width = $($(".grid .square")[0]).width();
   
-  //check if piece is inside the grid
+  //check if piece is inside the grid and place it
   if( offset.left > gridoffset.left - square_width * 0.5 && 
       offset.left + $(event.currentTarget).width() < gridoffset.left + $(".grid").width() + square_width * 0.5 &&
       offset.top > gridoffset.top - square_width * 0.5 &&
@@ -150,12 +163,14 @@ function pieceMouseUp(event, instance) {
       $(event.currentTarget).offset({left: offsetArr[0], top: offsetArr[1]});
     }
   }
-  else { //if piece is outside the grid
+  //if piece is outside the grid
+  else {
     updateGrid(removePieceFromGrid(instance));
     instance.grid_coordinates.set([-1, -1]);
   }
 }
 
+//associate the mouse down, up and touch functions
 Template.piece.events({
   'mousedown .piece'(event, instance) {
     pieceMouseDown(event, instance);
@@ -174,6 +189,7 @@ Template.piece.events({
   }
 });
 
+//determine whether the location on the grid where the piece is being placed is empty
 function isEmptySpaceUnder(piece, grid, x, y) {
   for(var i=0; i < piece[0].length; i++) {
     for(var j=0; j < piece.length; j++) {
@@ -185,8 +201,9 @@ function isEmptySpaceUnder(piece, grid, x, y) {
   return true;
 }
 
+//place piece on grid
 function setPieceOnGrid(instance, x, y) {
-  var piece = instance.data.piece; //instance.piece.get();
+  var piece = instance.data.piece;
   var grid = Session.get("grid");
 
   for(var i=0; i < piece[0].length; i++) {
@@ -196,10 +213,10 @@ function setPieceOnGrid(instance, x, y) {
       }
     }
   }
-
   return grid;
 }
 
+//remove piece from grid
 function removePieceFromGrid(instance) {
   var piece_xy = instance.grid_coordinates.get();
   var x = piece_xy[0], y = piece_xy[1];
@@ -220,6 +237,7 @@ function removePieceFromGrid(instance) {
   return grid;
 }
 
+//helpers to manipulate the grid
 function isActiveSquare(piece, x, y) {
   return piece[y][x];
 }
@@ -233,7 +251,7 @@ function setInactiveSquare(piece, x, y) {
   return piece;
 }
 
-
+//update grid state for session and database
 function updateGrid(grid) {
   Session.set('grid', grid);
   var gridId = Session.get('gridId');

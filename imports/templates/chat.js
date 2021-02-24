@@ -1,3 +1,5 @@
+//this is the code for the chat box
+
 import { Template } from 'meteor/templating';
 import { Messages } from '../../database/collections.js';
 import './chat.html';

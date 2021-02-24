@@ -1,3 +1,5 @@
+//these are all the blocks which are used in the edit mode
+
 export var blocks = [
     [
         [false, true, false, false],
