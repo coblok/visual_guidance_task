@@ -4,7 +4,8 @@ running:
 
 - install meteor (tested with version XXX)
 - navigate to root folder
-- run with command `meteor`
+- run command `meteor npm install --save @babel/runtime`
+- run application with command `meteor`
 - navigate to [http://localhost:3000/client/test](http://localhost:3000/client/test) and to [http://localhost:3000/expert/test](http://localhost:3000/expert/test)
 - to create more rooms (only "test" room comes built-in) insert into the mongodb rooms collection an item `Grids.insert({_id: 'room_name', level: 'empty', gridData : [ [ false, false, false ], [ false, false, false ] ]});`, where `room_name` will replace the `test` in the url (previous bullet point)
 
