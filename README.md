@@ -2,7 +2,7 @@
 
 running:
 
-- install meteor (tested with version XXX)
+- install meteor (tested with version 2.0)
 - navigate to root folder
 - run command `meteor npm install --save @babel/runtime`
 - run application with command `meteor`
