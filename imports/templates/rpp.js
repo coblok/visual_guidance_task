@@ -44,7 +44,7 @@ function createAnswer(instance, answer) {
         }
         Messages.insert(msg);  //insert answers here
 
-        textAreas.val("");
+        textArea.val("");
     }
 };
 
