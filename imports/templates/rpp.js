@@ -8,7 +8,7 @@ import { questions, questions2 } from '../../imports/levels/questions.js';
 //import './chat.html';
 //import './templates.html';
 //import '../../client/main.html';
-import '../templates/rpp.html';
+import './rpp.html';
 
 
 
@@ -25,12 +25,15 @@ function updateTimeSync() {
 
 
 
-function createAnswer(text) {
-    if(text !== "") {
-    
+function createAnswer(instance, answer) {
+    var textArea = $(instance.firstNode).children('.area');
+    var text = textArea.val();
+    var answer = instance.data.answer;
+    if(text && text !== "") {
+
         var nick = Session.get('nick');
         var chatId = Session.get('gridId');
-        var answerButton = Session.get('answerButton');
+        var answerButton = answer;
         var timestamp = (new Date()).getTime() - Session.get('localTimeComp') + Session.get('serverTimeComp');
         var msg = {
             text: text,
@@ -40,34 +43,28 @@ function createAnswer(text) {
             time: timestamp
         }
         Messages.insert(msg);  //insert answers here
+
+        textAreas.val("");
     }
 };
 
 
-Template.rpp_view.
+/*Template.rpp_view.
 (function (){
     var x =this.firstNode;
     console.log(x);
 });
+*/
 
 
-
-Template.rpp_view.events({
+Template.rpp_question.events({
     'click #saveAnswer'(event, instance) {
-        console.log('I try');
-        
-        console.log($(instance.firstNode).children('#area1').val());
-        Session.set('answerButton', 1);
-        createAnswer($(instance.firstNode).children('#area1').val());  
-        $(instance.firstNode).children('#area1').val("");             
-        console.log('two times');
+        createAnswer(instance);  
     },
     'keypress textarea'(event, instance) {
         if((event.keyCode | event.which) === 13) { //Enter key
             event.preventDefault();
-            Session.set('answerButton', 1);
-            createAnswer($(instance.firstNode).children('#area1').val());
-            $(instance.firstNode).children('#area1').val("");
+            createAnswer(instance);
         }
     }
 });
@@ -82,10 +79,11 @@ function pad(num) {
     return res;
 }
 
-Template.rpp_view.helpers({
+Template.rpp_question.helpers({
     'answers': function() {
         updateTimeSync(); // update time sync for every new message
-        var msgs = Messages.find({answer: 1}, { sort: { time: -1 }, transform: function(msg) {
+        var answer = Template.instance().data.answer;
+        var msgs = Messages.find({answer: answer}, { sort: { time: -1 }, transform: function(msg) {
             var time = new Date(msg.time);
             msg.time = time.getHours() + ':' + pad(time.getMinutes()) + ':' + pad(time.getSeconds());
             msg.nick = msg.nick === Session.get('nick') ? 'You' : msg.nick;
@@ -101,11 +99,6 @@ Template.rpp_view.helpers({
         }
 
         return msgs;
-    },
-    'showHeart': function() {
-        return Session.get('showHeart');
-    },
-
-
+    }
 
 })
