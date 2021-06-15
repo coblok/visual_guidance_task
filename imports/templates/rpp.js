@@ -1,8 +1,18 @@
 //this is the code for the chat box
 
 import { Template } from 'meteor/templating';
-import { Messages } from '../../database/collections.js';
-import './chat.html';
+import { Messages, Answers } from '../../database/collections.js';
+
+import { questions, questions2 } from '../../imports/levels/questions.js';
+
+//import './chat.html';
+//import './templates.html';
+//import '../../client/main.html';
+import '../templates/rpp.html';
+
+
+
+
 
 function updateTimeSync() {
     Meteor.call('getServerTime', function(err, res) {
@@ -12,57 +22,57 @@ function updateTimeSync() {
         }
     });
 }
-  
-function createMessage(text) {
+
+
+
+function createAnswer(text) {
     if(text !== "") {
+    
         var nick = Session.get('nick');
         var chatId = Session.get('gridId');
+        var answerButton = Session.get('answerButton');
         var timestamp = (new Date()).getTime() - Session.get('localTimeComp') + Session.get('serverTimeComp');
         var msg = {
             text: text,
             nick: nick,
+            answer: answerButton,
             chatId: chatId,
             time: timestamp
         }
-        Messages.insert(msg);
+        Messages.insert(msg);  //insert answers here
     }
 };
 
-Template.chat.events({
-    'click button'(event, instance) {
-        console.log($(instance.firstNode).children('textarea').val());
-        createMessage($(instance.firstNode).children('textarea').val());
-        $(instance.firstNode).children('textarea').val("");
+
+Template.rpp_view.
+(function (){
+    var x =this.firstNode;
+    console.log(x);
+});
+
+
+
+Template.rpp_view.events({
+    'click #saveAnswer'(event, instance) {
+        console.log('I try');
+        
+        console.log($(instance.firstNode).children('#area1').val());
+        Session.set('answerButton', 1);
+        createAnswer($(instance.firstNode).children('#area1').val());  
+        $(instance.firstNode).children('#area1').val("");             
+        console.log('two times');
     },
     'keypress textarea'(event, instance) {
         if((event.keyCode | event.which) === 13) { //Enter key
             event.preventDefault();
-            createMessage($(instance.firstNode).children('textarea').val());
-            $(instance.firstNode).children('textarea').val("");
+            Session.set('answerButton', 1);
+            createAnswer($(instance.firstNode).children('#area1').val());
+            $(instance.firstNode).children('#area1').val("");
         }
     }
 });
 
-function animateHeart() {
-    var hr = Session.get('heart_rate');
-    var icon = $("#heart_icon");
-    icon.animate({
-        'background-size': "50%"
-    }, hr / 2, function() {
-        hr = Session.get('heart_rate');
-        icon.animate({
-            'background-size': "100%"
-        }, hr / 2, function() {
-            animateHeart();
-        });
-    
-    });
-}
 
-Template.chat.onRendered(function() {
-    var showHeart = Session.get('showHeart');
-    if(showHeart) animateHeart();
-});
 
 function pad(num) {
     var res = '' + num;
@@ -72,10 +82,10 @@ function pad(num) {
     return res;
 }
 
-Template.chat.helpers({
-    'messages': function() {
+Template.rpp_view.helpers({
+    'answers': function() {
         updateTimeSync(); // update time sync for every new message
-        var msgs = Messages.find({}, { sort: { time: -1 }, transform: function(msg) {
+        var msgs = Messages.find({answer: 1}, { sort: { time: -1 }, transform: function(msg) {
             var time = new Date(msg.time);
             msg.time = time.getHours() + ':' + pad(time.getMinutes()) + ':' + pad(time.getSeconds());
             msg.nick = msg.nick === Session.get('nick') ? 'You' : msg.nick;
@@ -94,5 +104,8 @@ Template.chat.helpers({
     },
     'showHeart': function() {
         return Session.get('showHeart');
-    }
+    },
+
+
+
 })

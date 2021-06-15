@@ -1,0 +1,57 @@
+<template name="rpp_view">
+    <div class="rpp_view">
+
+        <h2 id="question1"> </h2>
+        <h3> Here we place answers</h3>
+        <hr>
+        <textarea id="area1" maxlength="1000" placeholder="Write here"></textarea>
+        <div class="footer">
+            <button id="saveAnswer">Send</button>
+        </div>
+        <div class="answers">
+            {{#each answers}}
+            {{> answer}}
+            {{/each}}
+        </div>
+
+        <h2>Question 2</h2>
+        <h3> Here we place answers</h3>
+        <hr>
+        <textarea id="area2" maxlength="1000" placeholder="Write here"></textarea>
+        <div class="footer">
+            <button id="saveAnswer2">Send</button>
+        </div>
+        <div class="answers">
+            {{#each answers}}
+            {{> answer}}
+            {{/each}}
+        </div>
+
+
+        <h2>Question 3</h2>
+        <h3> Here we place answers</h3>
+        <hr>
+        <textarea id="area3" maxlength="1000" placeholder="Write here"></textarea>
+        <div class="footer">
+            <button id="saveAnswer3">Send</button>
+        </div>
+        <div class="answers">
+            {{#each answers}}
+            {{> answer}}
+            {{/each}}
+        </div>
+
+    </div>
+</template>
+
+
+
+
+<template name="answer">
+    <div class="answer">
+        {{#unless hide_header}}
+        <h4>{{time}} | {{nick}}</h4>
+        {{/unless}}
+        {{text}}
+    </div>
+</template>

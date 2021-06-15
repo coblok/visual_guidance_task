@@ -1,0 +1,33 @@
+
+div.rpp_view {
+    font-family: "open-sans", Arial, sans-serif;
+    font-weight: 400;
+    font-size: 14px;
+    color: #404040;
+    background: white;
+    overflow: auto;
+    height: 720px;
+}
+
+.answers {
+    display: flex;
+    flex-direction: column;
+
+    margin: 0px 0px 0px 5%; 
+
+    
+    overflow-y: scroll;
+    overflow-x: hidden;
+    height: 244px;
+}
+
+.answer {
+    align-self: flex-start;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.answer h4 {
+    margin-top: 0px;
+    margin-bottom: 0px;
+}

@@ -3,7 +3,7 @@
 import { Meteor } from 'meteor/meteor';
 
 //importing the collections used in the app
-import { Grids, Levels, Messages, Heartrates, Solutions, GridSteps } from '../database/collections.js';
+import { Grids, Levels, Messages, Heartrates, Solutions, GridSteps, GridNumber, LevelNumber, LevelId, Answers } from '../database/collections.js';
 //import '../database/collections.js';
 import {default_levels} from '../imports/levels/default_levels.js'
 
@@ -27,13 +27,25 @@ Meteor.startup(() => {
 });
 
 //publish grid, chat messages and heart rates based on the current room id
+
+Meteor.publish('gridNumberById', function(id) {
+  return GridNumber.find({_id: id});
+});
+
+Meteor.publish('answersByChatId', function(chatId) {
+  return Answers.find({_id: chatId});
+});
+
+
 Meteor.publish('gridById', function (gridId) {
   return Grids.find({_id: gridId});
 });
 
+
 Meteor.publish('messagesByChatId', function (chatId) {
   return Messages.find({chatId: chatId}); //, { sort: { time: -1 } } );
 });
+
 
 Meteor.publish('heartrateById', function(id) {
   return Heartrates.find({_id: id});
@@ -43,6 +55,16 @@ Meteor.publish('heartrateById', function(id) {
 //publish single levels based on level identifier
 Meteor.publish('levelById', function (levelId) {
   return Levels.find({_id: levelId});
+});
+
+//publish single levels based on level identifier
+Meteor.publish('levelIdById', function (levelId) {
+  return LevelId.find({_id: levelId});
+});
+
+//publish single levels based on level identifier
+Meteor.publish('levelNumberById', function (levelId) {
+  return LevelNumber.find({_id: levelId});
 });
 
 
@@ -70,7 +92,31 @@ Levels.allow({
   }
 });
 
+GridNumber.allow({
+  update: function() {
+    return true;
+   }
+});
+
+LevelNumber.allow({
+  update: function() {
+    return true;
+   }
+});
+
+LevelId.allow({
+  update: function() {
+    return true;
+   }
+});
+
 Messages.allow({
+  insert: function() {
+    return true;
+  }
+});
+
+Answers.allow({
   insert: function() {
     return true;
   }
@@ -88,6 +134,11 @@ Grids.allow({
   }
 })
 
+GridNumber.allow({
+  update() {
+    return true;
+  }
+});
 //observe all grids for changes and save all events to the database with timestamp
 //this makes it possible to get step-by-step play data
 var grids = Grids.find();

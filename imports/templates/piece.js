@@ -1,22 +1,29 @@
 //this file contains most of the game logic
 
-import { Grids, Solutions } from '../../database/collections.js';
+import { Grids, Solutions,GridNumber, LevelNumber } from '../../database/collections.js';
 import { Template } from 'meteor/templating';
 import { ReactiveVar } from 'meteor/reactive-var';
 import './templates.html';
 
-
+console.log('pieces.js is running')
 //initialized current selected block index
 Session.set('block_index', 0);
+
+//start the switch_logic
+
+
 
 //update state of current pieces for client and edit views
 Template.client_view.helpers({
   pieces() {
+
     return Session.get('pieces');
+    
   }
 });
 Template.edit_view.helpers({
   pieces() {
+
     return Session.get('pieces');
   }
 });
@@ -31,31 +38,56 @@ Template.expert_view.helpers({
 //handle level progression in the expert view
 Template.expert_view.events({
   'click #levelDone': function() {
-    var level_index = Session.get('level_index');
+    //var level_index = Session.get('level_index');
+    var level_index = LevelNumber.findOne();
+    level_index = level_index.number;
+    console.log(level_index);
     var level = Session.get('levelId');
+
+    //here we try to add a switch to the logic so client and expert views change every second time
+    //var choose_order = Session.get('Counter');
+
+
 
     //if current level is "empty", begin the next level
     if(level === 'empty') {
       Session.set('beginTaskTimestamp', (new Date()).getTime());
-      if(level_index !== undefined) {
-        Session.set('level_index', level_index + 1);
+      //else Session.set('level_index', 0);
+       
+       if(level_index !== undefined) {
+        //Session.set('level_index', level_index + 1);
+        LevelNumber.update(Session.get('gridId'), { $set: {number: level_index + 1} } ); 
       }
-      else Session.set('level_index', 0);
+
     }
 
     //if there was a level going on, store the solution and move onto the the "empty" level
     else {
+      console.log('level was empty');
       var gridId = Session.get('gridId')
+      var levels_used=Session.get('use_levels')
       var grid = Grids.findOne();
       var solution = {};
       solution.gridData = grid.gridData;
       solution.level = grid.level;
       solution.gridId = grid._id;
+      solution.levels_used=levels_used;
       solution.timestamp = (new Date()).getTime();
       solution.begintimestamp = Session.get('beginTaskTimestamp');
       Solutions.insert(solution);
 
       Grids.update(gridId, { $set: { level: "empty" } } );
+    
+           //HERE WE ADD TO THE LOGIC
+
+      var count=GridNumber.findOne();
+      GridNumber.update({'_id': gridId}, {$set: {'count': count.count+1 } } );
+      //GridNumber.update({countID ,$inc: {count:1 } } );
+      //FlowRouter.reload()//reload the router
+      console.log('here is the test of grids number:');
+      console.log(count+1);
+
+
     }
   }
 });

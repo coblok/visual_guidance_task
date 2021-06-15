@@ -12,3 +12,10 @@ export const Messages = new Mongo.Collection('messages');
 
 export const Heartrates = new Mongo.Collection('heartrates');
 
+export const GridNumber = new Mongo.Collection('GridNumber');
+
+export const LevelId = new Mongo.Collection('level_ids');
+
+export const LevelNumber = new Mongo.Collection('level_numbers');
+
+export const Answers = new Mongo.Collection('answers');

@@ -6,15 +6,19 @@ import { FlowRouter } from 'meteor/kadira:flow-router';
 import { BlazeLayout } from 'meteor/kadira:blaze-layout';
 
 //importing necessary database collections
-import { Grids, Levels, Heartrates } from '../database/collections.js';
+import { Grids, Levels, Heartrates, GridNumber, LevelId, LevelNumber, Answers } from '../database/collections.js';
 
 import '../imports/templates/piece.js';
 import '../imports/templates/chat.js';
+import '../imports/templates/rpp.js';
 import {shrinkGrid} from '../imports/helpers/shrinkgrid.js'
 
 import './main.html';
+//import '../imports/templates/rpp.html';
+
 import { blocks } from '../imports/blocks/blocks.js';
 import { levels } from '../imports/levels/levels.js';
+import { levels_2 } from '../imports/levels/levels.js';
 
 //set default nick (this is typically overridden in the router)
 Session.set('nick', 'mr. bamboo');
@@ -30,32 +34,72 @@ Template.main_body.helpers({
 });
 
 
+//here we choose whitch of the level.lists we want to use
+var levels_to_use;
+Tracker.autorun(function() {
+  var level_list_choice = Session.get('use_levels'); //use levels returns undefined if 2
+  console.log('Here we choose level list ' + level_list_choice)
+  console.log(level_list_choice == 2);
+  if(level_list_choice ==2){
+    levels_to_use = levels_2;
+    console.log('id is true, so ' + levels_to_use)//
+  }
+  else levels_to_use = levels;
+});
+
+
+console.log('main is running');
 //autorun functions run always when collections or session variables within them update
 
 //keep track of the current level index active on the grid (expert view)
 Tracker.autorun(function() {
-  var level_index = Session.get('level_index');
-  var gridId = Session.get('gridId');
-  if(!Session.get('clientMode') && !Session.get('editMode')) {
-    if(level_index !== undefined && levels[level_index]) Grids.update(gridId, { $set: { level: levels[level_index] } } );
-    else Grids.update(gridId, { $set: { level: "empty" } } );
+  var level_index = LevelNumber.findOne(); //Session.get('level_index');
+  if(level_index !== undefined) {
+      level_index = level_index.number;
+      var gridId = Session.get('gridId');
+      if(clientMode && !Session.get('editMode')) {
+        if(level_index !== -1 && levels_to_use.length > level_index) Grids.update(gridId, { $set: { level: levels_to_use[level_index] } } ); // here we have levels to use variable. Old one was levels-
+        else Grids.update(gridId, { $set: { level: "empty" } } );
+      }
   }
 });
 
 //keep track of the current level
 Tracker.autorun(function() {
   var grid = Grids.findOne();
+  console.log('AAAAA')
+  console.log(grid)
   if(grid !== undefined && grid.gridData !== undefined) {
     Session.set('grid', grid.gridData);
+    console.log(grid.level);
     Session.set('levelId', grid.level);
   }
 });
+
+
+//Start the counter at 0
+Tracker.autorun(function() {
+    var gridId=Session.get('gridId')
+    console.log('test numbering of grid at start')
+    GridNumber.update(gridId, {$set: {'count' : 0} } );
+
+
+
+    Session.set('Counter',0) //tarvitaanko
+    
+});
+
 
 //keep track of the grid (room) id
 Tracker.autorun(function() {
   var gridId = Session.get('gridId');
   Meteor.subscribe('gridById', gridId);
   Meteor.subscribe('messagesByChatId', gridId);
+  Meteor.subscribe('gridNumberById',gridId);
+  Meteor.subscribe('levelNumberById',gridId);
+  Meteor.subscribe('levelIdById',gridId);
+  Meteor.subscribe('answersByChatId',gridId);
+
 });
 
 //level change -> expert initializes the change and client responds by initializing an empty grid
@@ -120,25 +164,80 @@ function updateGrid(grid) {
 
 
 
+
+// Creates the global variable for switching between client modes
+var clientMode;
+Tracker.autorun(function() {
+    clientMode = Session.get('clientMode')
+});
+
+// Autorun function in which we switch the view between participant views every time when GridNumber is updated
+Tracker.autorun(function() {
+
+  var count=GridNumber.findOne();
+    if (count !== undefined && Session.get('rpp_mode') !== true ){
+      var counter = count.count;  //is this even needed? 
+      console.log('here we see counter');
+      console.log(counter);
+      console.log('do we switch?')
+      console.log(counter % 2) //need to be a proper logic think this again
+      console.log('are we in client mode ' + clientMode);
+      //if (counter % 2) {
+          console.log('reloading')
+          Session.set('counter',counter);
+          if (clientMode ) {
+
+            Session.set('clientMode', false);
+            BlazeLayout.render('main_body', {main: 'expert_view'});
+          }
+          else{
+            Session.set('clientMode', true);
+            BlazeLayout.render('main_body', {main: 'client_view'});
+          }
+          }
+     //}
+});
+
+
+
 //the router defines the url schema
 
 //query 'nick' sets the users nick in chat (?nick=xxx after the url)
 
 //render expert view for the /expert route
-FlowRouter.route('/expert/:gridId', {
+
+
+
+
+FlowRouter.route('/expert/visual/:gridId/:use_levels', {
+ 
   name: 'Expert.view',
-  action(params, queryParams) {
+    action(params, queryParams) {
+    console.log('test')
     if(queryParams.nick) Session.set('nick', queryParams.nick);
     //setting default nick for "expert"
-    else Session.set('nick', 'Service Advisor'); 
+    else Session.set('nick', 'pari'); 
+
+    if (params.use_levels){
+      Session.set('use_levels',params.use_levels) 
+	} ;
 
     Meteor.call('isValidGridId', params.gridId, function(err, res) {
+
       if(res) {
-        BlazeLayout.render('main_body', {main: 'expert_view'});
-        Session.set('gridId', params.gridId);
-        if(queryParams.level) {
-          Session.set('levelId', queryParams.level);
-        }
+
+          console.log('expert is expert')
+          BlazeLayout.render('main_body', {main: 'expert_view'});
+          Session.set('gridId', params.gridId);
+          Session.set('clientMode', false);
+          LevelNumber.update(Session.get('gridId'), { $set: {number: -1} } );
+
+          if(queryParams.level) {
+            Session.set('levelId', queryParams.level);
+            //LevelId.update(params.gridId, $set: queryParams.level);
+          }
+        //}
+       
       }
       else {
         BlazeLayout.render('main_body', {main: 'error'});
@@ -148,23 +247,44 @@ FlowRouter.route('/expert/:gridId', {
 });
 
 //render client view for the /client route
-FlowRouter.route('/client/:gridId', {
+FlowRouter.route('/client/visual/:gridId/:use_levels', {
   name: 'Client.view',
   action(params, queryParams) {
-    Session.set('showHeart', true);
+    Session.set('showHeart', false);
     if(queryParams.nick) Session.set('nick', queryParams.nick);
     //setting default nick for the "client"
-    else Session.set('nick', 'Customer');
+    else Session.set('nick', 'Pari');
+
+    if (params.use_levels){
+      Session.set('use_levels',params.use_levels) 
+	} ;
 
     Meteor.call('isValidGridId', params.gridId, function(err, res) {
-      if(res) {
-        BlazeLayout.render('main_body', {main: 'client_view'});
-        Session.set('gridId', params.gridId);
-        Session.set('clientMode', true);
-        Meteor.subscribe('heartrateById', params.gridId);
-        if(queryParams.level) {
-          Session.set('levelId', queryParams.level);
+      //var s = Session.get('counter')
+      //console.log(s/2)
+      //console.log(Math.floor(s/2.))
+      
+      if(res) {/*
+        console.log(s/2 == Math.floor(s/2))
+        if (s/2 != Math.floor(s/2)){
+        
+          console.log('client is expert')
+          BlazeLayout.render('main_body', {main: 'expert_view'});
+          Session.set('gridId', params.gridId);
+          if(queryParams.level) {
+            Session.set('levelId', queryParams.level);
+          }
         }
+        if (s/2 == Math.floor(s/2)) {*/
+          console.log('client is client')
+          BlazeLayout.render('main_body', {main: 'client_view'});
+          Session.set('gridId', params.gridId);
+          Session.set('clientMode', true);
+          Meteor.subscribe('heartrateById', params.gridId);
+          if(queryParams.level) {
+            Session.set('levelId', queryParams.level);
+		  }
+		//}
       }
       else {
         BlazeLayout.render('main_body', {main: 'error'});
@@ -172,6 +292,83 @@ FlowRouter.route('/client/:gridId', {
     });
   }
 });
+
+
+FlowRouter.route('/expert/questions/:gridId/:use_levels', {
+ 
+  name: 'Questions.view',
+    action(params, queryParams) {
+    console.log('questions')
+    if(queryParams.nick) Session.set('nick', queryParams.nick);
+    //setting default nick for "expert"
+    else Session.set('nick', 'pari'); 
+
+    if (params.use_levels){
+      Session.set('use_levels',params.use_levels) 
+	} ;
+
+    Meteor.call('isValidGridId', params.gridId, function(err, res) {
+
+      if(res) {
+
+        
+         
+          BlazeLayout.render('rpp_view', {main: 'rpp_view'});
+          Session.set('gridId', params.gridId);
+          Session.set('rpp_mode', true);
+          //Session.set('clientMode', false);
+          //LevelNumber.update(Session.get('gridId'), { $set: {number: -1} } );
+
+          // Here we choose which is the level list we read (should be 1 or 2)
+
+        //}
+       
+      }
+      else {
+       // BlazeLayout.render('main_body', {main: 'error'});
+      }
+    });
+  }
+});
+
+
+FlowRouter.route('/client/questions/:gridId/:use_levels', {
+ 
+  name: 'Questions.view',
+    action(params, queryParams) {
+    console.log('questions')
+    if(queryParams.nick) Session.set('nick', queryParams.nick);
+    //setting default nick for "expert"
+    else Session.set('nick', 'pari'); 
+
+    if (params.use_levels){
+      Session.set('use_levels',params.use_levels) 
+	} ;
+
+    Meteor.call('isValidGridId', params.gridId, function(err, res) {
+
+      if(res) {
+
+        
+         
+          BlazeLayout.render('rpp_view', {main: 'rpp_view'});
+          Session.set('gridId', params.gridId);
+          Session.set('rpp_mode', true);
+          //Session.set('clientMode', false);
+          //LevelNumber.update(Session.get('gridId'), { $set: {number: -1} } );
+
+          // Here we choose which is the level list we read (should be 1 or 2)
+
+        //}
+       
+      }
+      else {
+       // BlazeLayout.render('main_body', {main: 'error'});
+      }
+    });
+  }
+});
+
 
 //render edit view for the /edit route
 FlowRouter.route('/edit/:gridId', {
@@ -205,7 +402,6 @@ FlowRouter.route('/', {
     BlazeLayout.render('main_body', {main: 'error'});
   }
 });
-
 
 
 //ui elements for templates
