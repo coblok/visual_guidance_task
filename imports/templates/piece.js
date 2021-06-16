@@ -9,10 +9,6 @@ console.log('pieces.js is running')
 //initialized current selected block index
 Session.set('block_index', 0);
 
-//start the switch_logic
-
-
-
 //update state of current pieces for client and edit views
 Template.client_view.helpers({
   pieces() {

@@ -11,7 +11,20 @@ import { questions, questions2 } from '../../imports/levels/questions.js';
 import './rpp.html';
 
 
-
+//here we choose whitch of the level.lists we want to use
+var questions_to_use;
+Tracker.autorun(function() {
+  var level_list_choice = Session.get('use_levels'); 
+  console.log('Here we choose level list ' + level_list_choice)
+  if(level_list_choice ==2){
+    questions_to_use = questions2;
+    Session.set('html_trigger', 1);
+  }
+  else {
+    questions_to_use = questions;
+    Session.set('html_trigger', 0);
+  }
+});
 
 
 function updateTimeSync() {
@@ -78,6 +91,17 @@ function pad(num) {
     }
     return res;
 }
+
+
+Tracker.autorun(function() {
+    Session.get('html_trigger');
+    Template.rpp_view.helpers({
+        'questions1': questions_to_use[0],
+        'questions2': questions_to_use[1],
+        'questions3': questions_to_use[2],
+
+    });
+});
 
 Template.rpp_question.helpers({
     'answers': function() {

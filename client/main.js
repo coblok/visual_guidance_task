@@ -19,7 +19,7 @@ import './main.html';
 import { blocks } from '../imports/blocks/blocks.js';
 import { levels } from '../imports/levels/levels.js';
 import { levels_2 } from '../imports/levels/levels.js';
-
+import { questions, questions2 } from '../imports/levels/questions.js';
 //set default nick (this is typically overridden in the router)
 Session.set('nick', 'mr. bamboo');
 
@@ -37,14 +37,16 @@ Template.main_body.helpers({
 //here we choose whitch of the level.lists we want to use
 var levels_to_use;
 Tracker.autorun(function() {
-  var level_list_choice = Session.get('use_levels'); //use levels returns undefined if 2
+  var level_list_choice = Session.get('use_levels'); 
   console.log('Here we choose level list ' + level_list_choice)
-  console.log(level_list_choice == 2);
   if(level_list_choice ==2){
     levels_to_use = levels_2;
-    console.log('id is true, so ' + levels_to_use)//
+    Session.set('questions', questions2);
   }
-  else levels_to_use = levels;
+  else {
+     levels_to_use = levels;
+     Session.set('questions',questions);
+   }
 });
 
 
@@ -205,10 +207,6 @@ Tracker.autorun(function() {
 //query 'nick' sets the users nick in chat (?nick=xxx after the url)
 
 //render expert view for the /expert route
-
-
-
-
 FlowRouter.route('/expert/visual/:gridId/:use_levels', {
  
   name: 'Expert.view',
@@ -293,7 +291,7 @@ FlowRouter.route('/client/visual/:gridId/:use_levels', {
   }
 });
 
-
+//Renders the RPP-questions page
 FlowRouter.route('/expert/questions/:gridId/:use_levels', {
  
   name: 'Questions.view',
@@ -331,7 +329,7 @@ FlowRouter.route('/expert/questions/:gridId/:use_levels', {
   }
 });
 
-
+//Renders the RPP-questions page
 FlowRouter.route('/client/questions/:gridId/:use_levels', {
  
   name: 'Questions.view',
