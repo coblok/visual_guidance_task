@@ -175,7 +175,7 @@ Tracker.autorun(function() {
 Tracker.autorun(function() {
 
   var count=GridNumber.findOne();
-    if (count !== undefined && Session.get('rpp_mode') !== true ){
+    if (!Session.get('editMode') && count !== undefined && Session.get('rpp_mode') !== true ){
       var counter = count.count;  //is this even needed? 
       console.log('here we see counter');
       console.log(counter);

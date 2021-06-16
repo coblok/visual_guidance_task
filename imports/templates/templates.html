@@ -24,14 +24,19 @@
         {{/each}}
     </div>
 </template>
+
 <template name="edit_view">
-    <button id="save">Save level</button>
+
+    <div class="footer">
+        <button id="save">Save level</button>
+    </div>
+
     <p></p>
     {{> grid}}
     <p></p>
     {{> grid}}
     {{#each pieces}}
-        {{> piece id=@index piece=this}}
+    {{> piece id=@index piece=this}}
     {{/each}}
 
 </template>
