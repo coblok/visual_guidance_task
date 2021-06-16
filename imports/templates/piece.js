@@ -40,11 +40,6 @@ Template.expert_view.events({
     console.log(level_index);
     var level = Session.get('levelId');
 
-    //here we try to add a switch to the logic so client and expert views change every second time
-    //var choose_order = Session.get('Counter');
-
-
-
     //if current level is "empty", begin the next level
     if(level === 'empty') {
       Session.set('beginTaskTimestamp', (new Date()).getTime());
@@ -54,7 +49,6 @@ Template.expert_view.events({
         //Session.set('level_index', level_index + 1);
         LevelNumber.update(Session.get('gridId'), { $set: {number: level_index + 1} } ); 
       }
-
     }
 
     //if there was a level going on, store the solution and move onto the the "empty" level
@@ -67,7 +61,7 @@ Template.expert_view.events({
       solution.gridData = grid.gridData;
       solution.level = grid.level;
       solution.gridId = grid._id;
-      solution.levels_used=levels_used;
+      solution.block=levels_used;
       solution.timestamp = (new Date()).getTime();
       solution.begintimestamp = Session.get('beginTaskTimestamp');
       Solutions.insert(solution);

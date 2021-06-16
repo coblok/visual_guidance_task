@@ -46,11 +46,13 @@ function createAnswer(instance, answer) {
 
         var nick = Session.get('nick');
         var chatId = Session.get('gridId');
+        var block =Session.get('use_levels');
         var answerButton = answer;
         var timestamp = (new Date()).getTime() - Session.get('localTimeComp') + Session.get('serverTimeComp');
         var msg = {
             text: text,
             nick: nick,
+            block: block,
             answer: answerButton,
             chatId: chatId,
             time: timestamp

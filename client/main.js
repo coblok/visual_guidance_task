@@ -6,7 +6,7 @@ import { FlowRouter } from 'meteor/kadira:flow-router';
 import { BlazeLayout } from 'meteor/kadira:blaze-layout';
 
 //importing necessary database collections
-import { Grids, Levels, Heartrates, GridNumber, LevelId, LevelNumber, Answers } from '../database/collections.js';
+import { Grids, Levels, Heartrates, GridNumber, LevelId, LevelNumber} from '../database/collections.js';
 
 import '../imports/templates/piece.js';
 import '../imports/templates/chat.js';
@@ -100,8 +100,6 @@ Tracker.autorun(function() {
   Meteor.subscribe('gridNumberById',gridId);
   Meteor.subscribe('levelNumberById',gridId);
   Meteor.subscribe('levelIdById',gridId);
-  Meteor.subscribe('answersByChatId',gridId);
-
 });
 
 //level change -> expert initializes the change and client responds by initializing an empty grid
@@ -214,7 +212,7 @@ FlowRouter.route('/expert/visual/:gridId/:use_levels', {
     console.log('test')
     if(queryParams.nick) Session.set('nick', queryParams.nick);
     //setting default nick for "expert"
-    else Session.set('nick', 'pari'); 
+    else Session.set('nick', 'pari1'); 
 
     if (params.use_levels){
       Session.set('use_levels',params.use_levels) 
@@ -234,7 +232,7 @@ FlowRouter.route('/expert/visual/:gridId/:use_levels', {
             Session.set('levelId', queryParams.level);
             //LevelId.update(params.gridId, $set: queryParams.level);
           }
-        //}
+
        
       }
       else {
@@ -251,29 +249,16 @@ FlowRouter.route('/client/visual/:gridId/:use_levels', {
     Session.set('showHeart', false);
     if(queryParams.nick) Session.set('nick', queryParams.nick);
     //setting default nick for the "client"
-    else Session.set('nick', 'Pari');
+    else Session.set('nick', 'Pari2');
 
     if (params.use_levels){
       Session.set('use_levels',params.use_levels) 
 	} ;
 
     Meteor.call('isValidGridId', params.gridId, function(err, res) {
-      //var s = Session.get('counter')
-      //console.log(s/2)
-      //console.log(Math.floor(s/2.))
+
       
-      if(res) {/*
-        console.log(s/2 == Math.floor(s/2))
-        if (s/2 != Math.floor(s/2)){
-        
-          console.log('client is expert')
-          BlazeLayout.render('main_body', {main: 'expert_view'});
-          Session.set('gridId', params.gridId);
-          if(queryParams.level) {
-            Session.set('levelId', queryParams.level);
-          }
-        }
-        if (s/2 == Math.floor(s/2)) {*/
+      if(res) {
           console.log('client is client')
           BlazeLayout.render('main_body', {main: 'client_view'});
           Session.set('gridId', params.gridId);
@@ -299,7 +284,7 @@ FlowRouter.route('/expert/questions/:gridId/:use_levels', {
     console.log('questions')
     if(queryParams.nick) Session.set('nick', queryParams.nick);
     //setting default nick for "expert"
-    else Session.set('nick', 'pari'); 
+    else Session.set('nick', 'pari1'); 
 
     if (params.use_levels){
       Session.set('use_levels',params.use_levels) 
@@ -337,7 +322,7 @@ FlowRouter.route('/client/questions/:gridId/:use_levels', {
     console.log('questions')
     if(queryParams.nick) Session.set('nick', queryParams.nick);
     //setting default nick for "expert"
-    else Session.set('nick', 'pari'); 
+    else Session.set('nick', 'pari2'); 
 
     if (params.use_levels){
       Session.set('use_levels',params.use_levels) 
