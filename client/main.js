@@ -29,7 +29,8 @@ Session.set('heart_rate', 1000); //milliseconds
 //remove the chat box in edit mode
 Template.main_body.helpers({
   'nochat': function() {
-    return Session.get('editMode');
+    //return Session.get('editMode');
+    return true;
   }
 });
 
@@ -66,7 +67,7 @@ Tracker.autorun(function() {
   }
 });
 
-//keep track of the current level
+//keep track of the current level //Triggers twice. WHY?
 Tracker.autorun(function() {
   var grid = Grids.findOne();
   console.log('AAAAA')
@@ -215,7 +216,8 @@ FlowRouter.route('/expert/visual/:gridId/:use_levels', {
     else Session.set('nick', 'pari1'); 
 
     if (params.use_levels){
-      Session.set('use_levels',params.use_levels) 
+      var block= Number(params.use_levels);
+      Session.set('use_levels',block); 
 	} ;
 
     Meteor.call('isValidGridId', params.gridId, function(err, res) {
@@ -252,7 +254,8 @@ FlowRouter.route('/client/visual/:gridId/:use_levels', {
     else Session.set('nick', 'Pari2');
 
     if (params.use_levels){
-      Session.set('use_levels',params.use_levels) 
+      var block= Number(params.use_levels);
+      Session.set('use_levels',block); 
 	} ;
 
     Meteor.call('isValidGridId', params.gridId, function(err, res) {
@@ -287,7 +290,8 @@ FlowRouter.route('/expert/questions/:gridId/:use_levels', {
     else Session.set('nick', 'pari1'); 
 
     if (params.use_levels){
-      Session.set('use_levels',params.use_levels) 
+      var block= Number(params.use_levels);
+      Session.set('use_levels',block); 
 	} ;
 
     Meteor.call('isValidGridId', params.gridId, function(err, res) {
@@ -325,7 +329,8 @@ FlowRouter.route('/client/questions/:gridId/:use_levels', {
     else Session.set('nick', 'pari2'); 
 
     if (params.use_levels){
-      Session.set('use_levels',params.use_levels) 
+      var block= Number(params.use_levels);
+      Session.set('use_levels',block); 
 	} ;
 
     Meteor.call('isValidGridId', params.gridId, function(err, res) {

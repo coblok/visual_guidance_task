@@ -109,7 +109,9 @@ Template.rpp_question.helpers({
     'answers': function() {
         updateTimeSync(); // update time sync for every new message
         var answer = Template.instance().data.answer;
-        var msgs = Messages.find({answer: answer}, { sort: { time: -1 }, transform: function(msg) {
+        var block =Session.get('use_levels');
+       
+        var msgs = Messages.find({answer: answer, block: block}, { sort: { time: -1 }, transform: function(msg) {
             var time = new Date(msg.time);
             msg.time = time.getHours() + ':' + pad(time.getMinutes()) + ':' + pad(time.getSeconds());
             msg.nick = msg.nick === Session.get('nick') ? 'You' : msg.nick;
