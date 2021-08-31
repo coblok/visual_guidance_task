@@ -2,7 +2,7 @@
 
 <template name="rpp_view">
     <div class="rpp_view">
-        <h1>Vastatkaa kysymyksiin yksi kerrallaan. Tutkija kertoo teille, koska voitte siirtyä seuraavaan kysymykseen</h1>
+        <h1>Vastatkaa kysymyksiin yksi kerrallaan. Tutkija kertoo teille, koska voitte siirty&auml; seuraavaan kysymykseen</h1>
         <h2>{{questions1}}</h2>
         {{> rpp_question question="How do you do?" answer=1}}
         <h2>{{questions2}}</h2>
@@ -19,8 +19,8 @@
 
         <hr>
         <textarea class="area" maxlength="1000" placeholder="Write here"></textarea>
-        <button class="button" id="saveAnswer">Send</button>
-        <h3> previous answers</h3>
+        <button class="button" id="saveAnswer">L&auml;het&auml;</button>
+        <h3> vastaukset</h3>
         <div class="answers">
             {{#each answers}}
             {{> answer}}
