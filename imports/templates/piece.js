@@ -15,6 +15,9 @@ Template.client_view.helpers({
 
     return Session.get('pieces');
     
+  },
+    empty() {
+    return Session.get('levelId') === 'empty';
   }
 });
 Template.edit_view.helpers({

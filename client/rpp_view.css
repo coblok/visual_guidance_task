@@ -5,12 +5,28 @@ div.rpp_view {
     font-size: 14px;
     color: #404040;
     background: white;
-    overflow: auto;
-    height: 720px;
+    overflow-x: auto;
+    height: 95vh;
 }
+
+
+h1 {
+    margin: 20px 60px 60px ;
+    width: 75vw;
+    ;
+}
+
 
 h2 {
     margin: 0px 0px 0px 5%;
+    width: 75vw;
+    ;
+}
+
+hr {
+    margin: 20px 20px 20px 5%;
+    width: 75vw;
+    ;
 }
 
 h3 {
@@ -19,7 +35,7 @@ h3 {
 .area {
     font-family: "open-sans", Arial, sans-serif;
     height: 100px;
-    width: 400px;
+    width: 60vw;
     margin: 0px 0px 0px 5%;
     font-size: 14px;
 }
@@ -27,13 +43,13 @@ h3 {
     display: flex;
     flex-direction: column;
 
-    margin: 0px 0px 0px 5%; 
+    margin: 0px 0px 40px 5%; 
 
     
     overflow-y: scroll;
     overflow-x: hidden;
     height: 200px;
-    width:400px;
+    width:60vw;
 }
 
 .answer {
