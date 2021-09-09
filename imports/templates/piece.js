@@ -40,7 +40,7 @@ Template.expert_view.events({
     //var level_index = Session.get('level_index');
     var level_index = LevelNumber.findOne();
     level_index = level_index.number;
-    console.log(level_index);
+    console.log('click');
     var level = Session.get('levelId');
 
     //if current level is "empty", begin the next level

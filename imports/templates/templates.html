@@ -8,7 +8,7 @@
 </template>
 
 <template name="expert_view">
-    <h2>{{#if empty}}On sinun vuorosi neuvoa pariasi. Aloita teht&auml;v&auml; painamalla "Seuraava" Painiketta{{else}}Paina "valmis" painiketta, kun parisi on saanut vasemman puoleisen kuvion vastaamaan vain sinulle n&auml;kyv&auml;&auml; oikeanpuolimmaista kuviota. {{/if}}</h2>
+    <h2>{{#if empty}}On sinun vuorosi neuvoa pariasi. Aloita teht&auml;v&auml; painamalla "Seuraava" Painiketta{{else}}Paina "valmis" painiketta, kun olette saaneet vasemmanpuoleisen kuvion vastaamaan oikeanpuolimmaista. {{/if}}</h2>
     {{> grid}}{{> level}}
 
     <div>
@@ -17,7 +17,7 @@
     
 </template>
 <template name="client_view">
-    <h2>{{#if empty}}On sinun vuorosi olla neuvottavana. Odota, ett&auml; parisi aloittaa seuraavan teht&auml;v&auml;n{{else}} Asettele palaset parisi ohjesitamaan muotoon. {{/if}}</h2>
+    <h2>{{#if empty}}On sinun vuorosi olla neuvottavana. Odota, ett&auml; parisi aloittaa seuraavan teht&auml;v&auml;n{{else}} Voit nyt asettaa palasia ruudukkoon. {{/if}}</h2>
 
     <div class="client">
         {{> grid}}

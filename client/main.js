@@ -67,7 +67,7 @@ Tracker.autorun(function() {
   }
 });
 
-//keep track of the current level //Triggers twice. WHY?
+//keep track of the current level 
 Tracker.autorun(function() {
   var grid = Grids.findOne();
   console.log('AAAAA')
@@ -210,7 +210,7 @@ FlowRouter.route('/expert/visual/:gridId/:use_levels', {
  
   name: 'Expert.view',
     action(params, queryParams) {
-    console.log('test')
+    console.log('Started flow router')
     if(queryParams.nick) Session.set('nick', queryParams.nick);
     //setting default nick for "expert"
     else Session.set('nick', 'pari1'); 
@@ -228,8 +228,9 @@ FlowRouter.route('/expert/visual/:gridId/:use_levels', {
           BlazeLayout.render('main_body', {main: 'expert_view'});
           Session.set('gridId', params.gridId);
           Session.set('clientMode', false);
-          LevelNumber.update(Session.get('gridId'), { $set: {number: -1} } );
 
+          LevelNumber.update(Session.get('gridId'), { $set: {number: -1} } );
+          console.log(LevelNumber);
           if(queryParams.level) {
             Session.set('levelId', queryParams.level);
             //LevelId.update(params.gridId, $set: queryParams.level);

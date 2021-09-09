@@ -20,9 +20,10 @@ Meteor.startup(() => {
   }
 
   //insert test grid to database if it's not there yet
-  var test_grid = Grids.findOne({_id: 'test'});
+  var test_grid = Grids.findOne({_id: 't'});
   if(test_grid === undefined) {
     Grids.insert({_id: 'test', level: 'empty', gridData : [ [ false, false, false ], [ false, false, false ] ]});
+    LevelNumber.insert({ _id: 'test', number: -1 });
   }
 });
 
