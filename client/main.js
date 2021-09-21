@@ -213,7 +213,7 @@ FlowRouter.route('/expert/visual/:gridId/:use_levels', {
     console.log('Started flow router')
     if(queryParams.nick) Session.set('nick', queryParams.nick);
     //setting default nick for "expert"
-    else Session.set('nick', 'pari1'); 
+    else Session.set('nick', 'expert'); 
 
     if (params.use_levels){
       var block= Number(params.use_levels);
@@ -252,7 +252,7 @@ FlowRouter.route('/client/visual/:gridId/:use_levels', {
     Session.set('showHeart', false);
     if(queryParams.nick) Session.set('nick', queryParams.nick);
     //setting default nick for the "client"
-    else Session.set('nick', 'Pari2');
+    else Session.set('nick', 'client');
 
     if (params.use_levels){
       var block= Number(params.use_levels);
@@ -288,7 +288,7 @@ FlowRouter.route('/expert/questions/:gridId/:use_levels', {
     console.log('questions')
     if(queryParams.nick) Session.set('nick', queryParams.nick);
     //setting default nick for "expert"
-    else Session.set('nick', 'pari1'); 
+    else Session.set('nick', 'expert'); 
 
     if (params.use_levels){
       var block= Number(params.use_levels);
@@ -327,7 +327,7 @@ FlowRouter.route('/client/questions/:gridId/:use_levels', {
     console.log('questions')
     if(queryParams.nick) Session.set('nick', queryParams.nick);
     //setting default nick for "expert"
-    else Session.set('nick', 'pari2'); 
+    else Session.set('nick', 'client'); 
 
     if (params.use_levels){
       var block= Number(params.use_levels);
